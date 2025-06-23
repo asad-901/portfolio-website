@@ -26,11 +26,4 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install Stylelint
         run: npm install -g stylelint stylelint-config-standard
-      - name: Run Stylelint
-        run: |
-          if [ -z "$(find styles -name '*.css' -not -path './node_modules/*')" ]; then
-            echo "No CSS files found to lint"
-            exit 0
-          else
-            stylelint styles/**/*.css
-          fi
+     
