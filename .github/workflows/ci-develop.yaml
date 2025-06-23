@@ -1,29 +1,29 @@
-name: CI Linting Checks
+name: Lint HTML and CSS
 
 on:
   pull_request:
-    branches: [ develop ]
+    branches: [develop]
 
 jobs:
-  html-lint:
+  lint:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install HTMLHint
-        run: npm install -g htmlhint
-      - name: Run HTMLHint
-        run: |
-          if [ -z "$(find src -name '*.html' -not -path './node_modules/*')" ]; then
-            echo "No HTML files found to lint"
-            exit 0
-          else
-            htmlhint src/**/*.html
-          fi
 
-  css-lint:
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Install Stylelint
-        run: npm install -g stylelint stylelint-config-standard
-     
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install linters
+        run: |
+          npm init -y
+          npm install htmlhint stylelint stylelint-config-standard --save-dev
+
+      - name: Run HTMLHint
+        run: npx htmlhint "src/**/*.html"
+
+      - name: Run Stylelint
+        run: npx stylelint "styles/**/*.css"
